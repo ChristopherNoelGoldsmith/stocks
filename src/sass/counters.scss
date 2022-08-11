@@ -1,0 +1,48 @@
+@mixin counter-top($color, $font-size: 0.6rem, $position: relative) {
+	position: $position;
+	::after {
+		content: attr(top);
+		padding: 2px;
+		font-size: $font-size;
+		position: absolute;
+		color: #333;
+		background: $color;
+		top: 0;
+		right: 0;
+		width: 100%;
+		height: $font-size * 1.1;
+	}
+}
+
+@mixin counter-bottom($color, $font-size: 0.6rem, $size: 1.5rem) {
+	padding: 2px;
+	font-size: $font-size;
+	position: absolute;
+	color: ivory;
+	background: $color;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: $font-size * 1.1;
+}
+
+@mixin counter-corner(
+	$color,
+	$font-size: 0.6rem,
+	$size: 1.5rem,
+	$position: relative
+) {
+	position: $position;
+	::before {
+		content: attr(bottom);
+		padding: 2px;
+		font-size: $font-size;
+		position: absolute;
+		color: white;
+		background: $color;
+		bottom: 0;
+		left: 0;
+		width: $font-size * 1.45;
+		height: $font-size * 1.5;
+	}
+}

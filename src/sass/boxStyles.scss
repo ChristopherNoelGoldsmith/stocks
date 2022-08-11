@@ -1,0 +1,71 @@
+@use "./animations.scss";
+
+/*
+BASIC UI TEMPLATES FOR CARDS AND SO ON
+*/
+
+@mixin box-card($bg, $shadow: false, $ani: false) {
+	border-radius: 5px;
+	background: $bg;
+	@if ($shadow == true) {
+		@include shadow(2.5);
+	}
+	@if ($ani == true) {
+		@include animations.ani(fade-in, 0.8s);
+	}
+}
+
+@mixin navbar($bg, $border: black) {
+	@include borders(2, $border);
+	position: fixed;
+	background: $bg;
+	top: 0;
+	right: 0;
+	width: 100%;
+}
+
+//BASCI STYLES MIXINS FOR UI
+@mixin shadow($weight: 2, $color: rgba($color: black, $alpha: 0.75)) {
+	$shadow-weight: 1px * $weight;
+	$spread: $shadow-weight * 0.3;
+	box-shadow: $shadow-weight $shadow-weight $spread $spread $color;
+}
+
+@mixin borders($thick: 2.5, $color: black, $dir: all) {
+	$weight: $thick * 1px;
+	@if (dir == all) {
+		border: $weight, $color, solid;
+	}
+	@if (dir == top-right) {
+		border-top: $weight, $color, solid;
+		border-right: $weight, $color, solid;
+	}
+
+	@if (dir == top-left) {
+		border-top: $weight, $color, solid;
+		border-left: $weight, $color, solid;
+	}
+
+	@if (dir == bottom-right) {
+		border-bottom: $weight, $color, solid;
+		border-right: $weight, $color, solid;
+	}
+
+	@if (dir == bottom-left) {
+		border-bottom: $weight, $color, solid;
+		border-left: $weight, $color, solid;
+	}
+
+	@if (dir == top) {
+		border-top: $weight, $color, solid;
+	}
+	@if (dir == bottom) {
+		border-bottom: $weight, $color, solid;
+	}
+	@if (dir == left) {
+		border-left: $weight, $color, solid;
+	}
+	@if (dir == right) {
+		border-right: $weight, $color, solid;
+	}
+}

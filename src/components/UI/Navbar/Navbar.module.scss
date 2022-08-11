@@ -1,0 +1,9 @@
+@use "../../../sass/gssMain.scss";
+
+.navbar {
+	@include gssMain.navbar(green);
+	@include gssMain.flex-row;
+	h1 {
+		@include gssMain.fonts(4, white);
+	}
+}

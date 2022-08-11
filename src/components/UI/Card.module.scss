@@ -1,0 +1,29 @@
+@use "../../sass/gssMain.scss";
+
+.card {
+	@include gssMain.flex-row(left);
+	justify-self: left;
+	width: 100%;
+	height: 100%;
+	background-color: aqua;
+}
+
+.center {
+	@include gssMain.flex-column;
+}
+
+.left {
+	@include gssMain.flex-row(left);
+}
+
+.right {
+	@include gssMain.flex-row(right);
+}
+
+.top {
+	@include gssMain.flex-column(flex-start);
+}
+
+.bottom {
+	@include gssMain.flex-column(flex-end);
+}
