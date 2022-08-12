@@ -1,0 +1,15 @@
+@use "../../sass/gssMain.scss";
+
+.peers {
+	@include gssMain.flex-column;
+	ul {
+		@include gssMain.flex-row;
+		width: 100%;
+		li {
+			@include gssMain.box-card(rgba($color: black, $alpha: 0.7));
+			@include gssMain.flex-row;
+			width: 18%;
+			margin: 1rem;
+		}
+	}
+}

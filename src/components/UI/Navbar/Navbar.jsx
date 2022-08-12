@@ -1,10 +1,18 @@
 import styles from "./Navbar.module.scss";
+import { useParams } from "react-router-dom";
+import SearchInput from "../SearchInput";
 
-const Navbar = () => {
+const Navbar = (props) => {
+	const { id } = useParams();
+	console.log(id);
 	return (
 		<section className={styles["navbar"]}>
 			<nav>
-				<h1>"Wecome to Market Masters!"</h1>
+				{id ? (
+					<SearchInput direction={props.direction} />
+				) : (
+					<h1>"Wecome to Market Masters!"</h1>
+				)}
 			</nav>
 		</section>
 	);

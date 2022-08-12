@@ -1,0 +1,50 @@
+@use "../../sass/gssMain.scss";
+
+$background: rgba(
+	$color: green,
+	$alpha: 0,
+);
+
+.ticker-info {
+	@include gssMain.flex-row;
+	@include gssMain.box-card($background);
+	* {
+		@include gssMain.ani(fade-in, 0.7s);
+	}
+	gap: 0.5rem;
+	@include gssMain.md {
+		width: 60%;
+	}
+	img {
+		height: 2.5rem;
+		width: 2.5rem;
+	}
+	label {
+		@include gssMain.fonts(2, ivory);
+		height: 3rem;
+		position: relative;
+		min-width: 4rem;
+	}
+	label::before {
+		content: attr(bottom);
+		@include gssMain.counter-bottom(transparent);
+	}
+	.price {
+		@include gssMain.flex-column;
+		span {
+			width: inherit;
+			position: relative;
+			height: 2.5rem;
+			@include gssMain.fonts(1.5, ivory);
+		}
+		span.red::before {
+			content: attr(bottom);
+			@include gssMain.counter-bottom(rgba($color: red, $alpha: 0.4));
+		}
+
+		span.green::before {
+			content: attr(bottom);
+			@include gssMain.counter-bottom(rgba($color: green, $alpha: 0.4));
+		}
+	}
+}

@@ -17,40 +17,11 @@ $font-color-1: ivory;
 	padding: 5%;
 	.input-container {
 		@include gssMain.box-card($background, true, true);
-		@include gssMain.flex-row(left);
+		@include gssMain.flex-column;
 		width: 100%;
 		height: 60vh;
 		@include gssMain.md {
 			width: 60%;
-		}
-		form {
-			@include gssMain.flex-column;
-			* {
-				@include gssMain.ani(fade-in, 0.7s);
-			}
-			height: 100%;
-			gap: 5px;
-			input {
-				@include gssMain.fonts(1.2, $font-color-1);
-				border: none;
-				border-radius: 10px;
-				background: $item-bg-color;
-			}
-			input:hover,
-			input:focus {
-				border: green;
-			}
-			input::placeholder {
-				color: $font-color-1;
-			}
-			button {
-				@include gssMain.btn-1($font-color-1, $item-bg-color);
-				@include gssMain.font-styles(700);
-			}
-			button:hover {
-				cursor: pointer;
-				opacity: 0.7;
-			}
 		}
 	}
 }

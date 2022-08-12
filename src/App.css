@@ -1,7 +1,10 @@
+.bg {
+	background: black;
+}
 .bg::after {
 	content: "";
-	height: 100vh;
-	width: 100vw;
+	height: 100%;
+	width: 100%;
 	position: fixed;
 	background-image: url("./assets/bg-1.jpg");
 	background-position: center;

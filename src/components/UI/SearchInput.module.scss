@@ -1,0 +1,51 @@
+@use "../../sass/gssMain.scss";
+
+$item-bg-color: rgba(
+	$color: green,
+	$alpha: 0.6,
+);
+$background: rgba(
+	$color: #333,
+	$alpha: 0.65,
+);
+$font-color-1: ivory;
+
+form {
+	@include gssMain.fonts(1, $font-color-1);
+	* {
+		@include gssMain.ani(fade-in, 0.7s);
+	}
+	height: 100%;
+	gap: 5px;
+	input {
+		@include gssMain.fonts(1.2, $font-color-1);
+		border: none;
+		border-radius: 10px;
+		background: $item-bg-color;
+	}
+	input:hover,
+	input:focus {
+		border: green;
+	}
+	input::placeholder {
+		@include gssMain.fonts(0.8);
+		color: $font-color-1;
+		opacity: 0.4;
+	}
+	button {
+		@include gssMain.btn-1($font-color-1, $item-bg-color);
+		@include gssMain.font-styles(700);
+	}
+	button:hover {
+		cursor: pointer;
+		opacity: 0.7;
+	}
+}
+
+.row {
+	@include gssMain.flex-row;
+}
+
+.column {
+	@include gssMain.flex-column;
+}

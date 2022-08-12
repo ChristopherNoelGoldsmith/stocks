@@ -1,0 +1,6 @@
+@use "../../sass/gssMain.scss";
+
+.company-details {
+	@include gssMain.flex-row;
+	@include gssMain.fonts(1.1, ivory, left);
+}
