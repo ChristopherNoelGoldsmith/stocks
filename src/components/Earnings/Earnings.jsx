@@ -10,6 +10,7 @@ import {
 	Legend,
 	Tooltip,
 	Scatter,
+	ReferenceArea,
 	CartesianGrid,
 } from "recharts";
 
@@ -49,9 +50,9 @@ const Earnings = (props) => {
 			lowAndHighAct.high > lowAndHighCur.high
 				? lowAndHighAct.high
 				: lowAndHighCur.high;
+		setHighest(high);
+		setLowest(low);
 		console.log(low, high);
-		setHighest(Math.ceil(high));
-		setLowest(Math.floor(low));
 	};
 
 	const sortStuff = (num) => {
@@ -69,12 +70,8 @@ const Earnings = (props) => {
 		setHighAndLowOnChart();
 	}, [props.earningsData]);
 	return (
-		<ScatterChart
-			width={450}
-			height={225}
-			margin={{ top: 20, right: 20, bottom: 10, left: 10 }}
-		>
-			<CartesianGrid strokeDasharray="3 3" />
+		<ScatterChart width={450} height={225}>
+			<CartesianGrid strokeDasharray="1 1" />
 			<XAxis
 				type={"number"}
 				tickCount={4}

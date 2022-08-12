@@ -4,14 +4,13 @@ import SearchInput from "../SearchInput";
 
 const Navbar = (props) => {
 	const { id } = useParams();
-	console.log(id);
 	return (
 		<section className={styles["navbar"]}>
 			<nav>
 				{id ? (
 					<SearchInput direction={props.direction} />
 				) : (
-					<h1>"Wecome to Market Masters!"</h1>
+					<h1>"Wecome to Neon Market!"</h1>
 				)}
 			</nav>
 		</section>

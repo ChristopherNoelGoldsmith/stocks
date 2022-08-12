@@ -2,14 +2,31 @@
 
 .peers {
 	@include gssMain.flex-column;
+	width: 100%;
+	@include gssMain.md {
+		width: 30%;
+	}
 	ul {
 		@include gssMain.flex-row;
 		width: 100%;
 		li {
-			@include gssMain.box-card(rgba($color: black, $alpha: 0.7));
+			@include gssMain.box-card(rgba($color: black, $alpha: 0.9));
 			@include gssMain.flex-row;
-			width: 18%;
+			width: 35%;
+			@include gssMain.md {
+				width: 20vw;
+				@include gssMain.shadow(3, rgba($color: white, $alpha: 0.6));
+				@include gssMain.warp-box;
+			}
+			min-height: 10vh;
 			margin: 1rem;
+			img {
+				display: none;
+			}
+		}
+		li:hover {
+			transform: rotate(0deg);
+			box-shadow: none;
 		}
 	}
 }

@@ -15,6 +15,10 @@ BASIC UI TEMPLATES FOR CARDS AND SO ON
 	}
 }
 
+@mixin warp-box() {
+	transform: rotateY(45deg) rotateZ(-2deg);
+}
+
 @mixin navbar($bg, $border: black) {
 	@include borders(2, $border);
 	position: fixed;
@@ -29,6 +33,12 @@ BASIC UI TEMPLATES FOR CARDS AND SO ON
 	$shadow-weight: 1px * $weight;
 	$spread: $shadow-weight * 0.3;
 	box-shadow: $shadow-weight $shadow-weight $spread $spread $color;
+}
+
+@mixin neon-shadow($shadow-color: #bc13fe) {
+	box-shadow: 0 0 0.2rem #fff, 0 0 0.2rem #fff, 0 0 2rem $shadow-color,
+		0 0 0.8rem $shadow-color, 0 0 2.8rem $shadow-color,
+		inset 0 0 1.3rem $shadow-color;
 }
 
 @mixin borders($thick: 2.5, $color: black, $dir: all) {

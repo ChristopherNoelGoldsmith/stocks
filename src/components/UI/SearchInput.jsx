@@ -18,7 +18,6 @@ const SearchInput = (props) => {
 
 	return (
 		<form className={styles[props.direction]} onSubmit={searchHanlder}>
-			<h3>Enter a ticker symbol!</h3>
 			<input type="text" placeholder={DUMMY_DATA.tickerInput} />
 			<button>SEARCH</button>
 		</form>

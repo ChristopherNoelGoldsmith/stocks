@@ -9,20 +9,41 @@ import TickerInfo from "../components/TickerInfo/TickerInfo";
 import Profile from "../components/Profile/Profile";
 import Peers from "../components/Peers/Peers";
 
-const DUMMY_DATA = {
-	c: 2.56,
-	h: 12.38,
-	l: 1.13,
-	symbol: "AAPL",
-};
 //TODO: PEERS /stock/peers?symbol=AAPL
 const ProductPage = () => {
 	const [ticker, setTicker] = useState();
 	const [earningsData, setEarnings] = useState();
 	const [profileData, setProfile] = useState();
+	const [peersData, setPeers] = useState([]);
 	const { id: rawId } = useParams();
 	const id = rawId.toUpperCase();
 	const query = useQuery();
+
+	const peersListReducer = async (peers) => {
+		const createPeersList = peers
+			.sort(() => Math.random() - 0.5)
+			.map(async (peer, index) => {
+				if (index < 0 || index > 3) return;
+				const fields = { symbol: peer };
+				const ticker = await query("prices", fields);
+				const profileData = await query("profile", fields);
+				console.log(ticker, profileData);
+				if (!ticker.o) return;
+				return (
+					<li>
+						<TickerInfo
+							key={Math.random() * 100000}
+							ticker={ticker}
+							profileData={profileData}
+							id={peer}
+						/>
+					</li>
+				);
+			});
+		const list = await Promise.all(createPeersList);
+		console.log(list);
+		setPeers(list);
+	};
 
 	useEffect(() => {
 		const fields = { symbol: id };
@@ -30,15 +51,15 @@ const ProductPage = () => {
 			const price = await query("prices", fields);
 			const profile = await query("profile", fields);
 			const earnings = await query("earnings", fields);
-			console.log(profile);
+			const peers = await query("peers", fields);
 			if (!price || !earnings || !profile) return setTicker("NOT FOUND!");
+			await peersListReducer(peers);
 			setProfile(profile);
 			setEarnings(earnings);
 			return setTicker(price);
 		};
 		reqAPI();
 	}, [id]);
-
 	return (
 		<Fragment>
 			<Navbar direction={"row"} />
@@ -53,7 +74,7 @@ const ProductPage = () => {
 							<Profile profileData={profileData} />
 						</section>
 					</section>
-					<Peers profileData={profileData} /> />
+					<Peers peersData={peersData} />
 				</section>
 			) : null}
 		</Fragment>

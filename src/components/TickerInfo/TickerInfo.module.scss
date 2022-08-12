@@ -22,8 +22,14 @@ $background: rgba(
 	label {
 		@include gssMain.fonts(2, ivory);
 		height: 3rem;
+		text-shadow: 1px 1px 10px rgba($color: white, $alpha: 0.9);
 		position: relative;
 		min-width: 4rem;
+	}
+	:hover {
+		color: green;
+		text-shadow: none;
+		transform: scale(1.1);
 	}
 	label::before {
 		content: attr(bottom);

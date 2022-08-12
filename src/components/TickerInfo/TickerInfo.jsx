@@ -12,22 +12,21 @@ const TickerInfo = (props) => {
 	};
 
 	const priceMovementHanlder = () => {
-		const pMove = Math.round((props.ticker.c / props.ticker.o) * 100 - 100);
-		return setPriceMove(`${pMove}%`);
+		const pMove = Math.round(((props.ticker.c / props.ticker.o) * 100) / 100);
+		const dMove = Math.round((props.ticker.c - props.ticker.o) * 100) / 100;
+		return setPriceMove(`$${dMove} | ${pMove}%`);
 	};
 
 	const priceMoveDisplay = () => {
 		props.ticker.c > props.ticker.o
-			? setPriceDisplay({ color: "red" })
-			: setPriceDisplay({ color: "green" });
-		console.log(props.ticker.c);
+			? setPriceDisplay("red")
+			: setPriceDisplay("green");
 		return;
 	};
 
 	useEffect(() => {
 		priceMovementHanlder();
 		priceMoveDisplay();
-		console.log(priceDisplay);
 	}, []);
 
 	return (
@@ -49,7 +48,7 @@ const TickerInfo = (props) => {
 				<div className={`${styles["price"]}`}>
 					<span
 						bottom={priceMove}
-						className={` ${styles[`${"red"}`]}`}
+						className={` ${styles[`${priceDisplay}`]}`}
 					>{`$${props.ticker.c}`}</span>
 				</div>
 			</section>

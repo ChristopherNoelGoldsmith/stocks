@@ -7,11 +7,19 @@ $background: rgba(
 
 .product-page {
 	@include gssMain.flex-row;
-	width: 100vw;
 	min-height: 100vh;
 	padding: 5%;
 	gap: 3%;
+	overflow-x: scroll;
 	.product {
+		@include gssMain.neon-shadow(azure);
+		margin: 10vh;
+		width: 80%;
+		padding: 2rem;
+		@include gssMain.md {
+			margin-top: 0px;
+			width: 50%;
+		}
 		@include gssMain.box-card(rgba($color: black, $alpha: 0.7));
 		@include gssMain.flex-row;
 		.earnings {
