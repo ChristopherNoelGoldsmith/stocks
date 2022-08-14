@@ -12,6 +12,7 @@ $background: rgba(
 		@include gssMain.ani(fade-in, 0.7s);
 	}
 	gap: 0.5rem;
+	padding: 1rem 0;
 	@include gssMain.md {
 		width: 60%;
 	}
@@ -24,7 +25,7 @@ $background: rgba(
 		height: 3rem;
 		text-shadow: 1px 1px 10px rgba($color: white, $alpha: 0.9);
 		position: relative;
-		min-width: 4rem;
+		min-width: 5rem;
 	}
 	:hover {
 		color: green;
@@ -45,11 +46,13 @@ $background: rgba(
 		}
 		span.red::before {
 			content: attr(bottom);
+			border-radius: 5px;
 			@include gssMain.counter-bottom(rgba($color: red, $alpha: 0.4));
 		}
 
 		span.green::before {
 			content: attr(bottom);
+			border-radius: 5px;
 			@include gssMain.counter-bottom(rgba($color: green, $alpha: 0.4));
 		}
 	}

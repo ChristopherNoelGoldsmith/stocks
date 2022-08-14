@@ -5,7 +5,6 @@ import useQuery from "../../hooks/useQuery";
 import { useEffect } from "react";
 
 const Peers = (props) => {
-	console.log(props);
 	return (
 		<section className={styles["peers"]}>
 			<ul>{props?.peersData}</ul>
