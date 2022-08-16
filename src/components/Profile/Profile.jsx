@@ -2,6 +2,38 @@
 import styles from "./Profile.module.scss";
 const Profile = (props) => {
 	const { profileData } = props;
+
+	const convertToRightNumber = (num) => {
+		//TODO: CLEAN FUNCTION TO MAKE IT MORE STREAMLINED AND SCALEABLE
+		//! still bugs check ticker "FIZZ"
+		/*
+		///////////////////////////////////
+		* @param numArr
+
+		* @param measurement
+
+		* @param mInc
+		///////////////////////////////////
+		*/
+		const numString = `${Math.round(num)}`;
+		let numStart = numString;
+		let measurement = ["m", "b", "t"];
+		let mInc = 0;
+
+		while (numStart.length > 3) {
+			numStart = numStart.slice(0, numStart.length - 3);
+			mInc++;
+		}
+
+		if (numStart.length < 3) {
+			numStart = numStart + `.${numString[numStart.length]}`;
+		}
+
+		return numStart + measurement[mInc];
+	};
+
+	//TODO: CONVERT LIST TO TABLE
+
 	return (
 		<section className={styles["company-details"]}>
 			<section>
@@ -11,10 +43,13 @@ const Profile = (props) => {
 						<a href={profileData?.weburl}>WEBSITE</a>
 					</li>
 					<li>{`IPO: ${profileData?.ipo}`}</li>
-					<li>{`Market Cap: ${Math.round(
+					<li>{`Market Cap: ${convertToRightNumber(
 						profileData?.marketCapitalization
-					)}m`}</li>
-					<li>{`Shares Outstanding: ${profileData?.shareOutstanding}m`}</li>
+					)}
+					`}</li>
+					<li>{`Shares Outstandin: ${convertToRightNumber(
+						profileData?.shareOutstanding
+					)}`}</li>
 				</ul>
 			</section>
 		</section>

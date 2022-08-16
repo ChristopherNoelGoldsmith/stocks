@@ -14,6 +14,7 @@ const ProductPage = () => {
 	const [ticker, setTicker] = useState();
 	const [earningsData, setEarnings] = useState();
 	const [profileData, setProfile] = useState();
+	const [tickerName, setTickerName] = useState("poop");
 	const [peersData, setPeers] = useState([]);
 	const { id: rawId } = useParams();
 	const id = rawId.toUpperCase();
@@ -54,6 +55,16 @@ const ProductPage = () => {
 		setPeers(list);
 	};
 
+	/*
+///////////////////////////////////////////////////////////	
+	THIS useEffect HOOK IS WHAT POPULATES THE PRODUCT PAGE.
+	IT MAKES EACH QUERY AND PLUGS THE VALUES IN WITH THE 
+	useState HOOK
+
+	A RERENDER IS TRIGGERED WHENEVER THE :id PARAM OF THE 
+	URL CHANGES
+///////////////////////////////////////////////////////////
+	*/
 	useEffect(() => {
 		const fields = { symbol: id };
 		const reqAPI = async () => {
@@ -71,6 +82,7 @@ const ProductPage = () => {
 			await peersListReducer(peers);
 
 			//SETS THE STATES )
+			setTickerName(id);
 			setProfile(profile);
 			setEarnings(earnings);
 			return setTicker(price);
@@ -84,7 +96,11 @@ const ProductPage = () => {
 
 			<section className={styles["product-page"]}>
 				<section className={styles["product"]}>
-					<TickerInfo profileData={profileData} id={id} ticker={ticker} />
+					<TickerInfo
+						profileData={profileData}
+						id={tickerName}
+						ticker={ticker}
+					/>
 					<section className={styles["earnings"]}>
 						<Earnings earningsData={earningsData} />
 					</section>

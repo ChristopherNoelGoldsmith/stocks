@@ -16,7 +16,7 @@ $background: rgba(
 		margin: 10vh;
 		width: 80%;
 		padding: 2rem;
-		@include gssMain.md {
+		@include gssMain.xl {
 			margin-top: 0px;
 			width: 50%;
 		}

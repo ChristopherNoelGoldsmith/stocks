@@ -3,7 +3,7 @@
 .peers {
 	@include gssMain.flex-column;
 	width: 100%;
-	@include gssMain.md {
+	@include gssMain.xl {
 		width: 30%;
 	}
 	ul {
