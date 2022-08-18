@@ -37,6 +37,10 @@ const queryReducer = (mount, queryObject) => {
 	return result;
 };
 
+const checkName = () => {
+	
+}
+
 const useQuery = () => {
 	/*
 ///////////////////////////////////////////////////////

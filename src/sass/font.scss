@@ -12,3 +12,12 @@
 	font-weight: $weight;
 	letter-spacing: $spacing;
 }
+
+@mixin font-neon($color: $fff, $neon: #0fa, $border: false) {
+	color: $color;
+	@if ($border == true) {
+		text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	}
+	text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px $neon,
+		0 0 82px $neon, 0 0 92px $neon, 0 0 102px $neon, 0 0 151px $neon;
+}

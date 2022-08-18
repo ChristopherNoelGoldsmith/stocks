@@ -4,7 +4,19 @@
 	@include gssMain.navbar(rgba($color: black, $alpha: 0.6));
 	@include gssMain.flex-row;
 	padding: 10px;
+	img {
+		position: fixed;
+		width: 25px;
+		height: 25px;
+		top: 0;
+		left: 0;
+		margin: 10px;
+		@include gssMain.md {
+			width: 50px;
+			height: 50px;
+		}
+	}
 	h1 {
-		@include gssMain.fonts(4, white);
+		@include gssMain.fonts(2.5, ivory);
 	}
 }

@@ -6,5 +6,6 @@
 	span {
 		@include gssMain.ani(fade-in, 2s, infinite);
 		@include gssMain.fonts(4, white);
+		@include gssMain.font-neon(ivory, green);
 	}
 }
