@@ -16,6 +16,7 @@ const ProductPage = () => {
 	const [profileData, setProfile] = useState();
 	const [tickerName, setTickerName] = useState("poop");
 	const [peersData, setPeers] = useState([]);
+	const [loaded, setLoaded] = useState(false);
 	const { id: rawId } = useParams();
 	const id = rawId.toUpperCase();
 	const query = useQuery();
@@ -68,6 +69,7 @@ const ProductPage = () => {
 	useEffect(() => {
 		const fields = { symbol: id };
 		const reqAPI = async () => {
+			setLoaded(false);
 			// API CALLS ) CALLS ALL DATA FROM PARTS OF THE API TO CREATE THE PROFILE PAGE
 			const price = await query("prices", fields);
 			const profile = await query("profile", fields);
@@ -85,7 +87,8 @@ const ProductPage = () => {
 			setTickerName(id);
 			setProfile(profile);
 			setEarnings(earnings);
-			return setTicker(price);
+			setTicker(price);
+			return setLoaded(true);
 		};
 		reqAPI();
 	}, [id]);
@@ -94,22 +97,26 @@ const ProductPage = () => {
 		<Fragment>
 			<Navbar direction={"row"} />
 
-			<section className={styles["product-page"]}>
-				<section className={styles["product"]}>
-					<TickerInfo
-						profileData={profileData}
-						id={tickerName}
-						ticker={ticker}
-					/>
-					<section className={styles["earnings"]}>
-						<Earnings earningsData={earningsData} />
+			{loaded ? (
+				<section className={styles["product-page"]}>
+					<section className={styles["product"]}>
+						<TickerInfo
+							profileData={profileData}
+							id={tickerName}
+							ticker={ticker}
+						/>
+						<section className={styles["earnings"]}>
+							<Earnings earningsData={earningsData} />
+						</section>
+						<section>
+							<Profile profileData={profileData} />
+						</section>
 					</section>
-					<section>
-						<Profile profileData={profileData} />
-					</section>
+					<Peers peersData={peersData} />
 				</section>
-				<Peers peersData={peersData} />
-			</section>
+			) : (
+				<LoadingBar />
+			)}
 		</Fragment>
 	);
 };

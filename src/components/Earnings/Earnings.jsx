@@ -27,10 +27,29 @@ const createChart = (data) => {
 
 	return { actualRes, currentRes };
 };
+
+const graphSizeHanlder = () => {
+	let width = window.innerWidth / 4;
+	let height = width / 2;
+
+	if (width < 200) width = 200;
+	if (height < 100) height = 100;
+	return {
+		width,
+		height,
+	};
+};
+
 const Earnings = (props) => {
 	const [chart, setChart] = useState();
 	const [highest, setHighest] = useState(1);
 	const [lowest, setLowest] = useState(0);
+	const [graphSize, setGraphSize] = useState();
+	const handleWindowResize = () => {
+		const graphDim = graphSizeHanlder();
+		setGraphSize(graphDim);
+		return console.log("cum");
+	};
 
 	const setHighAndLowOnChart = () => {
 		if (!chart) return;
@@ -68,31 +87,38 @@ const Earnings = (props) => {
 		const newChart = createChart(props.earningsData);
 		setChart(newChart);
 		setHighAndLowOnChart();
+		handleWindowResize();
+		window.addEventListener("resize", handleWindowResize);
 	}, [props.earningsData]);
 	return (
-		<ScatterChart width={450} height={225}>
-			<CartesianGrid strokeDasharray="1 1" />
-			<XAxis
-				type={"number"}
-				tickCount={4}
-				domain={[1, 4]}
-				dataKey="x"
-				unit="Q"
-			/>
-			<YAxis type={"number"} dataKey="y" domain={[lowest, highest]} />
-			<Tooltip cursor={{ strokeDasharray: "5 5" }} />
-			<Legend />
-			<Scatter
-				name="Expected"
-				data={chart ? chart.currentRes : null}
-				fill="#8884d8"
-			/>
-			<Scatter
-				name="Actual"
-				data={chart ? chart.actualRes : null}
-				fill="#82ca9d"
-			/>
-		</ScatterChart>
+		<section className={styles["chart"]}>
+			<ScatterChart
+				width={graphSize?.width || 450}
+				height={graphSize?.height || 225}
+			>
+				<CartesianGrid strokeDasharray="1 1" />
+				<XAxis
+					type={"number"}
+					tickCount={4}
+					domain={[1, 4]}
+					dataKey="x"
+					unit="Q"
+				/>
+				<YAxis type={"number"} dataKey="y" domain={[lowest, highest]} />
+				<Tooltip cursor={{ strokeDasharray: "5 5" }} />
+				<Legend />
+				<Scatter
+					name="Expected"
+					data={chart ? chart.currentRes : null}
+					fill="#8884d8"
+				/>
+				<Scatter
+					name="Actual"
+					data={chart ? chart.actualRes : null}
+					fill="#82ca9d"
+				/>
+			</ScatterChart>
+		</section>
 	);
 };
 

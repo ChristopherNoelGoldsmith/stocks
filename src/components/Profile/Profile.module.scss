@@ -3,4 +3,11 @@
 .company-details {
 	@include gssMain.flex-row;
 	@include gssMain.fonts(1.1, ivory, left);
+
+	a {
+		@include gssMain.fonts(1, cyan, left);
+	}
+	a:hover {
+		color: green;
+	}
 }

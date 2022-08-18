@@ -1,6 +1,10 @@
 @use "../../sass/gssMain.scss";
 
 .loading {
-	@include gssMain.ani(fade-in, 2s, infinite);
-	@include gssMain.fonts(4, white);
+	@include gssMain.flex-column;
+	height: 100vh;
+	span {
+		@include gssMain.ani(fade-in, 2s, infinite);
+		@include gssMain.fonts(4, white);
+	}
 }

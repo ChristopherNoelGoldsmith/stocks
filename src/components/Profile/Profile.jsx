@@ -26,9 +26,9 @@ const Profile = (props) => {
 		}
 
 		if (numStart.length < 3) {
-			numStart = numStart + `.${numString[numStart.length]}`;
+			numStart = numStart + `.${numString[numStart.length - 1]}`;
 		}
-
+		console.log(numStart);
 		return numStart + measurement[mInc];
 	};
 
@@ -40,7 +40,7 @@ const Profile = (props) => {
 				<ul>
 					<li>{`${profileData?.finnhubIndustry} - (${profileData?.country})`}</li>
 					<li>
-						<a href={profileData?.weburl}>WEBSITE</a>
+						WEBSITE: <a href={profileData?.weburl}>{profileData?.name}</a>
 					</li>
 					<li>{`IPO: ${profileData?.ipo}`}</li>
 					<li>{`Market Cap: ${convertToRightNumber(

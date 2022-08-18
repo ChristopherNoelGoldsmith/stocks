@@ -56,9 +56,13 @@ queryObject: KEY VALUE PAIRS FOR FIELDS OF THE URL
 
 			const result = await fetch(query).then((res) => res.json());
 
+			//ERROR 1 ) BAD REQUESTS RETURN AN EMPTY OBJECT SO CHECKING FOR KEYS IS THE BEST WAY TO VERIFY ERRORS WITH INPUTS
+			//RETURNS FALSE UNDER THESE CIRCUMSTANCES.
+			if (Object.keys(result).length === 0) return false;
+
 			return result;
 		} catch (error) {
-			console.log(error);
+			return false;
 		}
 	};
 	return reqAPI;

@@ -18,7 +18,8 @@ $background: rgba(
 		padding: 2rem;
 		@include gssMain.xl {
 			margin-top: 0px;
-			width: 50%;
+			width: 55%;
+			min-height: 80vh;
 		}
 		@include gssMain.box-card(rgba($color: black, $alpha: 0.7));
 		@include gssMain.flex-row;
