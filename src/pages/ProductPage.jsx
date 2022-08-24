@@ -1,5 +1,4 @@
 import styles from "./ProductPage.module.scss";
-import Card from "../components/UI/Card";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, Fragment } from "react";
 import Earnings from "../components/Earnings/Earnings";

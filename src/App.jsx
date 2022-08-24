@@ -4,6 +4,7 @@ import ProductPage from "./pages/ProductPage";
 import { Route, Routes } from "react-router-dom";
 import { Fragment, useState } from "react";
 import { Helmet } from "react-helmet";
+import URLContextProvider from "./context/context";
 
 function App() {
 	return (
@@ -17,13 +18,15 @@ function App() {
 					https://marketmasters.netlify.app/"
 				/>
 			</Helmet>
-			<div className="App">
-				<div className="bg"></div>
-				<Routes>
-					<Route path="/" element={<HomePage />} />
-					<Route path={`/stock/:id`} element={<ProductPage />} />
-				</Routes>
-			</div>
+			<URLContextProvider>
+				<div className="App">
+					<div className="bg"></div>
+					<Routes>
+						<Route path="/" element={<HomePage />} />
+						<Route path={`/stock/:id`} element={<ProductPage />} />
+					</Routes>
+				</div>
+			</URLContextProvider>
 		</Fragment>
 	);
 }

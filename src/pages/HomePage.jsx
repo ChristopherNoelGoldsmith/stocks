@@ -1,9 +1,13 @@
 import styles from "./HomePage.module.scss";
 import Navbar from "../components/UI/Navbar/Navbar";
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import SearchInput from "../components/UI/SearchInput";
+import { UrlContext } from "../context/context";
 
 const HomePage = () => {
+	const { url } = useContext(UrlContext);
+	console.log(url);
+
 	return (
 		<Fragment>
 			<Navbar />

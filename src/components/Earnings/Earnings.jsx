@@ -48,7 +48,7 @@ const Earnings = (props) => {
 	const handleWindowResize = () => {
 		const graphDim = graphSizeHanlder();
 		setGraphSize(graphDim);
-		return console.log("cum");
+		return;
 	};
 
 	const setHighAndLowOnChart = () => {
