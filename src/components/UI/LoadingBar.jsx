@@ -3,8 +3,7 @@ import styles from "./LoadingBar.module.scss";
 const LoadingBar = (props) => {
 	return (
 		<div className={styles["loading"]}>
-			{" "}
-			<span>Loading</span>{" "}
+			<span>Loading</span>
 		</div>
 	);
 };

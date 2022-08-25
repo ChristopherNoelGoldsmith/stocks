@@ -1,7 +1,8 @@
 import styles from "./SearchInput.module.scss";
 import { useNavigate } from "react-router-dom";
 import useQuery from "../../hooks/useQuery";
-
+import { useContext } from "react";
+import { UrlContext } from "../../context/context";
 const DUMMY_DATA = {
 	tickerInput: "COMPANY NAME OR TICKER",
 };
@@ -9,6 +10,7 @@ const DUMMY_DATA = {
 const SearchInput = (props) => {
 	const navigate = useNavigate();
 	const query = useQuery();
+	const { urlContextReducer, URL_TYPES } = useContext(UrlContext);
 	//HANDLES THE SEACH INPUT ON ANY PAGE TO REDIRECT TO STOCK TICKER PAGE;
 	const searchHanlder = async (event) => {
 		event.preventDefault();
@@ -17,10 +19,10 @@ const SearchInput = (props) => {
 		if (!target.value) return;
 
 		const testTarget = await query("profile", { symbol: target.value });
-		if (!testTarget) return alert("invalid ticker or company");
-		console.log(testTarget);
 
-		navigate(`../stock/${target.value}`, { replace: true });
+		if (!testTarget) return alert("invalid ticker or company");
+
+		urlContextReducer({ type: URL_TYPES.STOCK, urlString: target.value });
 	};
 
 	return (

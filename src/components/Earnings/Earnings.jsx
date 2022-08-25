@@ -1,18 +1,7 @@
 ///stock/earnings?symbol=AAPL
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import styles from "./Earnings.module.scss";
-import {
-	ScatterChart,
-	XAxis,
-	YAxis,
-	ZAxis,
-	Legend,
-	Tooltip,
-	Scatter,
-	ReferenceArea,
-	CartesianGrid,
-} from "recharts";
+import { ScatterChart, XAxis, YAxis, Legend, Scatter } from "recharts";
 
 const createChart = (data) => {
 	//take 2 car values and add into 2 div elements wraped in another element;
@@ -42,8 +31,8 @@ const graphSizeHanlder = () => {
 
 const Earnings = (props) => {
 	const [chart, setChart] = useState();
-	const [highest, setHighest] = useState(1);
-	const [lowest, setLowest] = useState(0);
+	const [highest, setHighest] = useState();
+	const [lowest, setLowest] = useState();
 	const [graphSize, setGraphSize] = useState();
 	const handleWindowResize = () => {
 		const graphDim = graphSizeHanlder();
@@ -71,7 +60,7 @@ const Earnings = (props) => {
 				: lowAndHighCur.high;
 		setHighest(high);
 		setLowest(low);
-		console.log(low, high);
+		return;
 	};
 
 	const sortStuff = (num) => {
@@ -88,15 +77,15 @@ const Earnings = (props) => {
 		setChart(newChart);
 		setHighAndLowOnChart();
 		handleWindowResize();
-		window.addEventListener("resize", handleWindowResize);
-	}, [props.earningsData]);
+		return;
+	}, [props.earningsData, window.innerWidth, window.innerHeight]);
+
 	return (
 		<section className={styles["chart"]}>
 			<ScatterChart
 				width={graphSize?.width || 450}
 				height={graphSize?.height || 225}
 			>
-				<CartesianGrid strokeDasharray="1 1" />
 				<XAxis
 					type={"number"}
 					tickCount={4}
@@ -105,7 +94,6 @@ const Earnings = (props) => {
 					unit="Q"
 				/>
 				<YAxis type={"number"} dataKey="y" domain={[lowest, highest]} />
-				<Tooltip cursor={{ strokeDasharray: "5 5" }} />
 				<Legend />
 				<Scatter
 					name="Expected"

@@ -33,13 +33,10 @@ const queryReducer = (mount, queryObject) => {
 		url.push(`&${key}=${value}`);
 	}
 	const result = mount + url.join();
-	console.log(result);
 	return result;
 };
 
-const checkName = () => {
-	
-}
+const checkName = () => {};
 
 const useQuery = () => {
 	/*

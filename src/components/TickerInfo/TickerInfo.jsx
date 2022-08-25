@@ -1,9 +1,8 @@
 import styles from "./TickerInfo.module.scss";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useState, useEffect, useContext } from "react";
+import { UrlContext } from "../../context/context";
 const TickerInfo = (props) => {
-	const navigate = useNavigate();
+	const { urlContextReducer, URL_TYPES } = useContext(UrlContext);
 	const [priceMove, setPriceMove] = useState();
 	const [priceDisplay, setPriceDisplay] = useState();
 
@@ -31,13 +30,13 @@ const TickerInfo = (props) => {
 
 	//CHANGES PAGE TO TICKER SYMBOL INSERTED WHEN ACTIVATED
 	const navigationHandler = (event) => {
-		navigate(`../stock/${event.target.textContent}`, { replace: true });
+		const data = { type: URL_TYPES.STOCK, urlString: event.target.textContent };
+		urlContextReducer(data);
+		return;
 	};
 
 	// DETERMINES THE NUMBERS OF THE PRICE MOVEMENT BOX BELOW A COMPANIES PRICE
 	const priceMovementHanlder = () => {
-		console.log(props.ticker);
-
 		// PRICE 1 ) CREATES THE PERCENTAGE CHANGE AND DIFFERENCE IN PRICE
 		const pMove = Math.round(((props.ticker?.c / props.ticker?.o) * 100) / 100);
 		const dMove = Math.round((props.ticker?.c - props.ticker?.o) * 100) / 100;

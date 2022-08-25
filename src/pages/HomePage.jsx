@@ -5,9 +5,6 @@ import SearchInput from "../components/UI/SearchInput";
 import { UrlContext } from "../context/context";
 
 const HomePage = () => {
-	const { url } = useContext(UrlContext);
-	console.log(url);
-
 	return (
 		<Fragment>
 			<Navbar />

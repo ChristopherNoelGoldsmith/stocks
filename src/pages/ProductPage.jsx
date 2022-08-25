@@ -13,7 +13,7 @@ const ProductPage = () => {
 	const [ticker, setTicker] = useState();
 	const [earningsData, setEarnings] = useState();
 	const [profileData, setProfile] = useState();
-	const [tickerName, setTickerName] = useState("poop");
+	const [tickerName, setTickerName] = useState("ERROR");
 	const [peersData, setPeers] = useState([]);
 	const [loaded, setLoaded] = useState(false);
 	const { id: rawId } = useParams();

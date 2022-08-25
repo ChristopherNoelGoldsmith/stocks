@@ -5,7 +5,6 @@ const Profile = (props) => {
 
 	const convertToRightNumber = (num) => {
 		//TODO: CLEAN FUNCTION TO MAKE IT MORE STREAMLINED AND SCALEABLE
-		//! still bugs check ticker "FIZZ"
 		/*
 		///////////////////////////////////
 		* @param numArr
@@ -28,7 +27,6 @@ const Profile = (props) => {
 		if (numStart.length < 3) {
 			numStart = numStart + `.${numString[numStart.length - 1]}`;
 		}
-		console.log(numStart);
 		return numStart + measurement[mInc];
 	};
 
