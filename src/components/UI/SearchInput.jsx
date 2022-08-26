@@ -18,8 +18,6 @@ const SearchInput = (props) => {
 
 		if (!target.value) return;
 
-		const testTarget = await query("profile", { symbol: target.value });
-
 		urlContextReducer({ type: URL_TYPES.STOCK, urlString: target.value });
 	};
 

@@ -1,7 +1,7 @@
 @use "../../../sass/gssMain.scss";
 
 .navbar {
-	@include gssMain.navbar(rgba($color: black, $alpha: 0.6));
+	@include gssMain.navbar(rgba($color: black, $alpha: 0));
 	@include gssMain.flex-row;
 	padding: 10px;
 	img {

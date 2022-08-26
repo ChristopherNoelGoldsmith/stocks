@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState } from "react";
-import { LineChart, XAxis, YAxis, Legend, Line, Tooltip } from "recharts";
+import { LineChart, XAxis, YAxis, Line, Tooltip } from "recharts";
 import {
 	chartRangeReducer,
 	graphSizeHanlder,
@@ -12,9 +12,13 @@ const PriceHistory = (props) => {
 	const [chartDomain, dispatchChartDomain] = useReducer(chartRangeReducer, {});
 
 	useEffect(() => {
-		if (!props.data.c) return;
+		console.log(props.data);
+		if (!props.data) return;
 		const chartData = props.data.c.map((price, index) => {
-			return { name: index, value: price };
+			return {
+				name: new Date(props.data.t[index] * 1000).toLocaleDateString("en-US"),
+				value: price,
+			};
 		});
 		setChart(chartData);
 		console.log(chart);

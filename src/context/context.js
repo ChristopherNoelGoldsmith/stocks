@@ -47,7 +47,7 @@ const URLContextProvider = ({ children }) => {
 				break;
 
 			default:
-				console.log("ERROR!");
+				navigate(`../`, { replace: true });
 				break;
 		}
 	}, [url]);

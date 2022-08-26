@@ -9,6 +9,9 @@ import TickerInfo from "../components/TickerInfo/TickerInfo";
 import Profile from "../components/Profile/Profile";
 import Peers from "../components/Peers/Peers";
 import LoadingBar from "../components/UI/LoadingBar";
+import { checkCompanyName } from "../hooks/useQuery";
+import { useContext } from "react";
+import { UrlContext } from "../context/context";
 
 const ProductPage = () => {
 	const [ticker, setTicker] = useState();
@@ -19,6 +22,7 @@ const ProductPage = () => {
 	const [loaded, setLoaded] = useState(false);
 	const [candle, setCandle] = useState();
 	const { id: rawId } = useParams();
+	const { urlContextReducer, URL_TYPES } = useContext(UrlContext);
 	const id = rawId.toUpperCase();
 	const query = useQuery();
 
@@ -69,22 +73,28 @@ const ProductPage = () => {
 	*/
 	useEffect(() => {
 		const fields = { symbol: id };
-		const reqAPI = async () => {
+		const reqAPI = async (data) => {
 			setLoaded(false);
 			// API CALLS ) CALLS ALL DATA FROM PARTS OF THE API TO CREATE THE PROFILE PAGE
-			const price = await query("prices", fields);
-			const profile = await query("profile", fields);
-			const earnings = await query("earnings", fields);
-			const peers = await query("peers", fields);
+			const price = await query("prices", data);
+			const profile = await query("profile", data);
+			const earnings = await query("earnings", data);
+			const peers = await query("peers", data);
 			const candle = await query("candle", {
 				symbol: id,
 				from: Math.round(new Date().getTime() / 1000) - 60 * 60 * 24 * 30,
 				to: Math.round(new Date().getTime() / 1000),
 			});
 			// ERROR HANDLING ) IF ANY OF THE API CALLS RETURN FALSE IT RETURNS THE FUNCTION
-			if (!price || !earnings || !profile || !peers || !candle)
-				return setTicker("NOT FOUND!");
-
+			if (!price || !earnings || !profile || !peers || !candle) {
+				const newSymbol = checkCompanyName(data.symbol);
+				await urlContextReducer({
+					type: URL_TYPES.STOCK,
+					urlString: newSymbol,
+				});
+				return;
+			}
+			console.log(2);
 			// CREATES LIST )
 			await peersListReducer(peers);
 
@@ -96,7 +106,7 @@ const ProductPage = () => {
 			setCandle(candle);
 			return setLoaded(true);
 		};
-		reqAPI();
+		reqAPI(fields);
 	}, [id]);
 
 	return (

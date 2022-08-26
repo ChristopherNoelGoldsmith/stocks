@@ -1,3 +1,6 @@
+//STOCK_TICKERS
+import STOCK_TICKERS from ".././assets/stocks_tickers.json";
+
 /*
 ///////////////////////////////////////////////////////
 getMount is used to create the basis of the query URL
@@ -56,6 +59,7 @@ queryObject: KEY VALUE PAIRS FOR FIELDS OF THE URL
 
 			//URL CONTRUSTION 2 ) ADDS THE FIELDS TO THE URL
 			const query = queryReducer(mount, queryObject);
+
 			const result = await fetch(query).then((res) => res.json());
 
 			//ERROR 1 ) BAD REQUESTS RETURN AN EMPTY OBJECT SO CHECKING FOR KEYS IS THE BEST WAY TO VERIFY ERRORS WITH INPUTS
@@ -68,6 +72,18 @@ queryObject: KEY VALUE PAIRS FOR FIELDS OF THE URL
 		}
 	};
 	return reqAPI;
+};
+
+//TODO: ADJUST SO THAT IT TRIES MORE COMPANIES GOING DOWN THE ARRAY IF ONE DOES NOT FIT
+export const checkCompanyName = (companyName) => {
+	const regExp = new RegExp(companyName, "gi");
+	console.log(companyName);
+	const filteredData = STOCK_TICKERS.filter((stock) => {
+		return regExp.test(stock["Company Name"]);
+	});
+	console.log(filteredData);
+	const ticker = filteredData[0]["ACT Symbol"];
+	return ticker;
 };
 
 export default useQuery;
