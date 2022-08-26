@@ -1,8 +1,8 @@
 import "./App.css";
 import HomePage from "./pages/HomePage";
 import ProductPage from "./pages/ProductPage";
-import { Route, Routes, useParams } from "react-router-dom";
-import { Fragment, useContext, useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import { Fragment } from "react";
 import URLContextProvider from "./context/context";
 
 function App() {

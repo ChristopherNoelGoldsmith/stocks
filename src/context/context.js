@@ -1,5 +1,6 @@
-import { useState, createContext, useContext, useEffect } from "react";
+import { useState, createContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useQuery from "../hooks/useQuery";
 
 export const UrlContext = createContext("/");
 
@@ -10,6 +11,7 @@ const URL_TYPES = {
 const URLContextProvider = ({ children }) => {
 	const [url, setUrl] = useState("");
 	const navigate = useNavigate();
+	const reqApi = useQuery();
 
 	const urlContextReducer = (action) => {
 		setUrl(action);
@@ -21,7 +23,7 @@ const URLContextProvider = ({ children }) => {
     ///////////////////////////////////////////////////
     */
 
-	const stockTickerUrlChange = (string) => {
+	const stockTickerUrlChange = async (string) => {
 		navigate(`../stock/${string}`, { replace: true });
 	};
 

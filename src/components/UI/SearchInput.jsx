@@ -20,8 +20,6 @@ const SearchInput = (props) => {
 
 		const testTarget = await query("profile", { symbol: target.value });
 
-		if (!testTarget) return alert("invalid ticker or company");
-
 		urlContextReducer({ type: URL_TYPES.STOCK, urlString: target.value });
 	};
 

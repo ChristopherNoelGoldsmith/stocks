@@ -1,7 +1,8 @@
 import styles from "./ProductPage.module.scss";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, Fragment } from "react";
-import Earnings from "../components/Earnings/Earnings";
+import Earnings from "../components/Charts/Earnings";
+import PriceHistory from "../components/Charts/PriceHistory";
 import useQuery from "../hooks/useQuery";
 import Navbar from "../components/UI/Navbar/Navbar";
 import TickerInfo from "../components/TickerInfo/TickerInfo";
@@ -16,6 +17,7 @@ const ProductPage = () => {
 	const [tickerName, setTickerName] = useState("ERROR");
 	const [peersData, setPeers] = useState([]);
 	const [loaded, setLoaded] = useState(false);
+	const [candle, setCandle] = useState();
 	const { id: rawId } = useParams();
 	const id = rawId.toUpperCase();
 	const query = useQuery();
@@ -74,9 +76,13 @@ const ProductPage = () => {
 			const profile = await query("profile", fields);
 			const earnings = await query("earnings", fields);
 			const peers = await query("peers", fields);
-
+			const candle = await query("candle", {
+				symbol: id,
+				from: Math.round(new Date().getTime() / 1000) - 60 * 60 * 24 * 30,
+				to: Math.round(new Date().getTime() / 1000),
+			});
 			// ERROR HANDLING ) IF ANY OF THE API CALLS RETURN FALSE IT RETURNS THE FUNCTION
-			if (!price || !earnings || !profile || !peers)
+			if (!price || !earnings || !profile || !peers || !candle)
 				return setTicker("NOT FOUND!");
 
 			// CREATES LIST )
@@ -87,6 +93,7 @@ const ProductPage = () => {
 			setProfile(profile);
 			setEarnings(earnings);
 			setTicker(price);
+			setCandle(candle);
 			return setLoaded(true);
 		};
 		reqAPI();
@@ -105,6 +112,7 @@ const ProductPage = () => {
 							ticker={ticker}
 						/>
 						<section className={styles["earnings"]}>
+							<PriceHistory data={candle} />
 							<Earnings earningsData={earningsData} />
 						</section>
 						<section>

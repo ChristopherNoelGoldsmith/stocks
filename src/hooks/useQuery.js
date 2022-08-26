@@ -7,9 +7,12 @@ getMount is used to create the basis of the query URL
 const getMount = (key) => {
 	//KEY TAKES THE APPROPRIATE URL FROM THE MOUNT OBJECT
 
+	//candle require "symbol", "from", "to"
 	const apiKey = "cbqdfb2ad3i9b8tfg7q0";
 
 	const mount = {
+		candle: `https://finnhub.io/api/v1/stock/candle?&token=${apiKey}&resolution=D`,
+		search: `https://finnhub.io/api/vD/search?&token=${apiKey}`,
 		prices: `https://finnhub.io/api/v1/quote?&token=${apiKey}`,
 		earnings: `https://finnhub.io/api/v1/stock/earnings?&token=${apiKey}`,
 		profile: `https://finnhub.io/api/v1/stock/profile2?&token=${apiKey}`,
@@ -33,10 +36,9 @@ const queryReducer = (mount, queryObject) => {
 		url.push(`&${key}=${value}`);
 	}
 	const result = mount + url.join();
+	if (result.includes(",")) return result.replace(/,/g, "");
 	return result;
 };
-
-const checkName = () => {};
 
 const useQuery = () => {
 	/*
@@ -54,7 +56,6 @@ queryObject: KEY VALUE PAIRS FOR FIELDS OF THE URL
 
 			//URL CONTRUSTION 2 ) ADDS THE FIELDS TO THE URL
 			const query = queryReducer(mount, queryObject);
-
 			const result = await fetch(query).then((res) => res.json());
 
 			//ERROR 1 ) BAD REQUESTS RETURN AN EMPTY OBJECT SO CHECKING FOR KEYS IS THE BEST WAY TO VERIFY ERRORS WITH INPUTS
