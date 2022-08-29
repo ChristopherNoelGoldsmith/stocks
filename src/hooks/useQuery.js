@@ -75,15 +75,24 @@ queryObject: KEY VALUE PAIRS FOR FIELDS OF THE URL
 };
 
 //TODO: ADJUST SO THAT IT TRIES MORE COMPANIES GOING DOWN THE ARRAY IF ONE DOES NOT FIT
-export const checkCompanyName = (companyName) => {
-	const regExp = new RegExp(companyName, "gi");
-	console.log(companyName);
-	const filteredData = STOCK_TICKERS.filter((stock) => {
-		return regExp.test(stock["Company Name"]);
-	});
-	console.log(filteredData);
-	const ticker = filteredData[0]["ACT Symbol"];
-	return ticker;
+export const checkCompanyName = (company, queryNumber) => {
+	try {
+		console.log(queryNumber);
+
+		if (queryNumber >= 2) return "REDIRECT";
+
+		const regExp = new RegExp(company, "gi");
+
+		const filteredData = STOCK_TICKERS.filter((stock) => {
+			return regExp.test(stock["Company Name"]);
+		});
+
+		const ticker = filteredData[queryNumber]["ACT Symbol"];
+		return ticker;
+	} catch (error) {
+		console.log(error);
+		return false;
+	}
 };
 
 export default useQuery;

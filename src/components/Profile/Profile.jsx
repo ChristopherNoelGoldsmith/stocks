@@ -4,14 +4,11 @@ const Profile = (props) => {
 	const { profileData } = props;
 
 	const convertToRightNumber = (num) => {
-		//TODO: CLEAN FUNCTION TO MAKE IT MORE STREAMLINED AND SCALEABLE
 		/*
 		///////////////////////////////////
-		* @param numArr
+		* @param measurement: array of the number measurments
 
-		* @param measurement
-
-		* @param mInc
+		* @param mInc: The incriment var used to determien which measurement is appended to the end of the number
 		///////////////////////////////////
 		*/
 		const numString = `${Math.round(num)}`;
@@ -19,18 +16,18 @@ const Profile = (props) => {
 		let measurement = ["m", "b", "t"];
 		let mInc = 0;
 
+		//Conversion 1 ) numStart's length is reduced until it is 3 digits
 		while (numStart.length > 3) {
 			numStart = numStart.slice(0, numStart.length - 3);
 			mInc++;
 		}
 
+		// Conversion 2 ) The correct measurement is appended to the string depending on number of slices initiated in the loop above
 		if (numStart.length < 3) {
 			numStart = numStart + `.${numString[numStart.length - 1]}`;
 		}
 		return numStart + measurement[mInc];
 	};
-
-	//TODO: CONVERT LIST TO TABLE
 
 	return (
 		<section className={styles["company-details"]}>

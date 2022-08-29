@@ -58,6 +58,7 @@ const TickerInfo = (props) => {
 		priceMovementHanlder();
 		priceMoveDisplay();
 	}, [props.ticker]);
+
 	return (
 		<figure className={styles["ticker-info"]}>
 			<img

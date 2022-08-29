@@ -21,6 +21,7 @@ const ProductPage = () => {
 	const [peersData, setPeers] = useState([]);
 	const [loaded, setLoaded] = useState(false);
 	const [candle, setCandle] = useState();
+	const [numberOfQueries, setNumberOfQueries] = useState(0);
 	const { id: rawId } = useParams();
 	const { urlContextReducer, URL_TYPES } = useContext(UrlContext);
 	const id = rawId.toUpperCase();
@@ -85,16 +86,26 @@ const ProductPage = () => {
 				from: Math.round(new Date().getTime() / 1000) - 60 * 60 * 24 * 30,
 				to: Math.round(new Date().getTime() / 1000),
 			});
-			// ERROR HANDLING ) IF ANY OF THE API CALLS RETURN FALSE IT RETURNS THE FUNCTION
+
+			// ERROR HANDLING 1 ) IF ANY OF THE API CALLS RETURN FALSE IT RETURNS THE FUNCTION
 			if (!price || !earnings || !profile || !peers || !candle) {
-				const newSymbol = checkCompanyName(data.symbol);
+				const newSymbol = checkCompanyName(data.symbol, numberOfQueries);
+				setNumberOfQueries((num) => num + 1);
+
+				// ERROR HANDLING 2 ) REDIRECTS TO HOME PAGE AFTER 3 UNSUCCESSFUL QUERIES ARE MADE ON THE NAME OF A COMPANY OR TICKER
+				if (newSymbol === "REDIRECT") {
+					await urlContextReducer({
+						type: newSymbol,
+					});
+					return;
+				}
+
 				await urlContextReducer({
 					type: URL_TYPES.STOCK,
-					urlString: newSymbol,
+					urlString: newSymbol || data.symbol, //ERROR HANDLING 3 ) IF NEW SYMBOL IS FALSE, ORIGINAL SYMBOL IS USED
 				});
 				return;
 			}
-			console.log(2);
 			// CREATES LIST )
 			await peersListReducer(peers);
 
@@ -104,6 +115,7 @@ const ProductPage = () => {
 			setEarnings(earnings);
 			setTicker(price);
 			setCandle(candle);
+			setNumberOfQueries(0);
 			return setLoaded(true);
 		};
 		reqAPI(fields);

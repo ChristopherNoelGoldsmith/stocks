@@ -1,0 +1,19 @@
+@use "../../sass/gssMain.scss";
+
+.chart-error {
+	@include gssMain.flex-column;
+	min-width: 450px;
+	min-height: 250px;
+	width: 100%;
+	height: 100%;
+	border-left: 1px white solid;
+	border-bottom: 1px white solid;
+	border-radius: 10px;
+
+	.error-text {
+		@include gssMain.fonts(1.2, red);
+		background: green;
+		width: inherit;
+		height: inherit;
+	}
+}
