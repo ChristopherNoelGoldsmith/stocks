@@ -1,29 +1,37 @@
 import styles from "./SearchInput.module.scss";
-import { useNavigate } from "react-router-dom";
-import useQuery from "../../hooks/useQuery";
 import { useContext } from "react";
 import { UrlContext } from "../../context/context";
+import useInput from "../../hooks/useInput";
+
 const DUMMY_DATA = {
 	tickerInput: "COMPANY NAME OR TICKER",
 };
 
 const SearchInput = (props) => {
-	const navigate = useNavigate();
-	const query = useQuery();
 	const { urlContextReducer, URL_TYPES } = useContext(UrlContext);
+	const { inputState, inputHandler } = useInput();
+
+	const searchBarHandler = (event) => {
+		inputHandler({ type: "SEARCH", data: event.target.value });
+		return;
+	};
+
 	//HANDLES THE SEACH INPUT ON ANY PAGE TO REDIRECT TO STOCK TICKER PAGE;
 	const searchHanlder = async (event) => {
 		event.preventDefault();
-		const [target] = event.target;
-
-		if (!target.value) return;
-
-		urlContextReducer({ type: URL_TYPES.STOCK, urlString: target.value });
+		if (!inputState.SEARCH) return;
+		urlContextReducer({ type: URL_TYPES.STOCK, urlString: inputState.SEARCH });
+		inputHandler({ type: "SEARCH", data: "" });
 	};
 
 	return (
 		<form className={styles[props.direction]} onSubmit={searchHanlder}>
-			<input type="text" placeholder={DUMMY_DATA.tickerInput} />
+			<input
+				type="text"
+				onChange={searchBarHandler}
+				value={inputState?.SEARCH || ""}
+				placeholder={DUMMY_DATA.tickerInput}
+			/>
 			<button>SEARCH</button>
 		</form>
 	);
