@@ -20,7 +20,9 @@ const PriceHistory = (props) => {
 		// CHART 1 ) CREATES CHART DATA WITH PRICE AND DATE
 		const chartData = props.data.c.map((price, index) => {
 			return {
-				name: new Date(props.data.t[index] * 1000).toLocaleDateString("en-US"),
+				name: new Date(props.data.t[index] * 1000)
+					.toLocaleDateString("en-US")
+					.replace(/\/\w+$/gi, ""),
 				value: price,
 			};
 		});
@@ -31,7 +33,7 @@ const PriceHistory = (props) => {
 	}, [window.innerWidth]);
 
 	return (
-		<section className={styles["chart"]}>
+		<section>
 			<ChartErrorCatch condition={chart}>
 				<LineChart
 					width={graphSize?.width}

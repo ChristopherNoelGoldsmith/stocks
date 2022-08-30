@@ -1,9 +1,25 @@
-@mixin radial-gradient {
+@use "./animations.scss";
+
+@mixin radial-gradient($bg: white, $anim: false) {
 	background: rgb(255, 255, 255);
-	background: radial-gradient(
-		circle,
-		rgba(255, 255, 255, 1) 0%,
-		rgba(255, 255, 255, 0.7318277652858018) 45%,
-		rgba(255, 255, 255, 0) 100%
-	);
+
+	@if ($bg == white) {
+		background: radial-gradient(
+			circle,
+			rgba(255, 255, 255, 1) 0%,
+			rgba(255, 255, 255, 0.7318277652858018) 45%,
+			rgba(255, 255, 255, 0) 100%
+		);
+	} @else {
+		background: radial-gradient(
+			circle,
+			rgba($color: $bg, $alpha: 1) 0%,
+			rgba($color: $bg, $alpha: 0.7318277652858018) 45%,
+			rgba(255, 255, 255, 0) 100%
+		);
+	}
+
+	@if ($anim == true) {
+		@include animations.ani(pulse 2s infinite);
+	}
 }

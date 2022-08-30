@@ -1,7 +1,7 @@
 ///stock/earnings?symbol=AAPL
 import { useEffect, useState, useReducer } from "react";
 import styles from "./Charts.module.scss";
-import { ScatterChart, XAxis, YAxis, Legend, Scatter } from "recharts";
+import { ScatterChart, XAxis, YAxis, Legend, Scatter, Tooltip } from "recharts";
 import {
 	graphSizeHanlder,
 	chartHighAndLow,
@@ -11,14 +11,25 @@ import ChartErrorCatch from "../UI/ChartErrorCatch";
 
 const createEarningsChart = (data) => {
 	//take 2 chart values and add into 2 div elements wraped in another element;
+	console.log(data);
 
-	const actualRes = data.map((data, index) => {
-		return { x: index + 1, y: data.actual };
-	});
+	const actualRes = data
+		.map((data) => {
+			return {
+				Date: data.period.replace(/-\w+$/gi, "").replace(/-/, "/"),
+				Earnings: data.actual,
+			};
+		})
+		.reverse();
 
-	const currentRes = data.map((data, index) => {
-		return { x: index + 1, y: data.estimate };
-	});
+	const currentRes = data
+		.map((data) => {
+			return {
+				Date: data.period.replace(/-\w+$/gi, "").replace(/-/, "/"),
+				Earnings: data.estimate,
+			};
+		})
+		.reverse();
 
 	return { actualRes, currentRes };
 };
@@ -51,22 +62,22 @@ const Earnings = (props) => {
 		<section className={styles["chart"]}>
 			<ChartErrorCatch condition={chart}>
 				<ScatterChart
-					width={graphSize?.width || 450}
-					height={graphSize?.height || 225}
+					width={graphSize?.width || 225}
+					height={graphSize?.height || 125}
 					margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
 				>
 					<XAxis
-						type={"number"}
-						tickCount={4}
-						domain={[1, 4]}
-						dataKey="x"
-						unit="Q"
+						type={"category"}
+						dataKey="Date"
+						allowDuplicatedCategory={false}
+						angle={5}
 					/>
 					<YAxis
 						type={"number"}
-						dataKey="y"
+						dataKey="Earnings"
 						domain={[chartRange?.lowest, chartRange?.highest]}
 					/>
+					<Tooltip />
 					<Legend />
 					<Scatter
 						name="Expected"

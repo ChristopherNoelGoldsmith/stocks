@@ -1,9 +1,10 @@
 @use "../../sass/gssMain.scss";
 
-.chart-error {
+.chart-container {
 	@include gssMain.flex-column;
-	min-width: 450px;
-	min-height: 250px;
+	position: relative;
+	min-width: 225px;
+	min-height: 125px;
 	width: 100%;
 	height: 100%;
 	border-left: 1px white solid;
@@ -11,9 +12,18 @@
 	border-radius: 10px;
 
 	.error-text {
-		@include gssMain.fonts(1.2, red);
-		background: green;
-		width: inherit;
-		height: inherit;
+		@include gssMain.fonts(1.2, white);
+		width: 100%;
+		z-index: 1;
 	}
+}
+
+.chart-container.error::after {
+	content: "";
+	@include gssMain.radial-gradient(crimson, true);
+	position: absolute;
+	width: 99%;
+	height: 99%;
+	border-radius: 10px;
+	z-index: 0;
 }
