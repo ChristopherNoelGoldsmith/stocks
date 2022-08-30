@@ -11,25 +11,20 @@ import ChartErrorCatch from "../UI/ChartErrorCatch";
 
 const createEarningsChart = (data) => {
 	//take 2 chart values and add into 2 div elements wraped in another element;
-	console.log(data);
 
-	const actualRes = data
-		.map((data) => {
-			return {
-				Date: data.period.replace(/-\w+$/gi, "").replace(/-/, "/"),
-				Earnings: data.actual,
-			};
-		})
-		.reverse();
+	const extractData = (arr) => {
+		return arr
+			.map((data) => {
+				return {
+					Date: data.period.replace(/-\w+$/gi, "").replace(/-/, "/"),
+					Earnings: data.actual,
+				};
+			})
+			.reverse();
+	};
 
-	const currentRes = data
-		.map((data) => {
-			return {
-				Date: data.period.replace(/-\w+$/gi, "").replace(/-/, "/"),
-				Earnings: data.estimate,
-			};
-		})
-		.reverse();
+	const actualRes = extractData(data);
+	const currentRes = extractData(data);
 
 	return { actualRes, currentRes };
 };
