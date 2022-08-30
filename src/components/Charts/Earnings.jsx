@@ -12,19 +12,19 @@ import ChartErrorCatch from "../UI/ChartErrorCatch";
 const createEarningsChart = (data) => {
 	//take 2 chart values and add into 2 div elements wraped in another element;
 
-	const extractData = (arr) => {
+	const extractData = (arr, key) => {
 		return arr
 			.map((data) => {
 				return {
 					Date: data.period.replace(/-\w+$/gi, "").replace(/-/, "/"),
-					Earnings: data.actual,
+					Earnings: data[key],
 				};
 			})
 			.reverse();
 	};
-
-	const actualRes = extractData(data);
-	const currentRes = extractData(data);
+	console.log(data);
+	const actualRes = extractData(data, "actual");
+	const currentRes = extractData(data, "estimate");
 
 	return { actualRes, currentRes };
 };
@@ -46,7 +46,6 @@ const Earnings = (props) => {
 		//CHART 1 ) CREATES CHART THEN SETS IT TO THE STATE
 		const newChart = createEarningsChart(props.earningsData);
 		setChart(newChart);
-
 		// CHART 2 ) SIZES CHART DEPENDING ON THE DOMAIN OF THE DATA FROM earningsData
 		chartHighAndLow(dispatchChartRange, chart);
 		handleWindowResize();

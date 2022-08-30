@@ -16,7 +16,7 @@ export const graphSizeHanlder = () => {
 	let height = width / 2;
 
 	if (width < 200) width = 200;
-	if (height < 100) height = 100;
+	if (height < 150) height = 150;
 	return {
 		width,
 		height,

@@ -10,7 +10,7 @@ $background: rgba(
 	min-height: 100vh;
 	padding: 5%;
 	gap: 3%;
-	overflow-x: scroll;
+	overflow-x: hidden;
 	.product {
 		@include gssMain.neon-shadow(azure);
 		margin: 10vh;
