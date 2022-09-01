@@ -8,4 +8,7 @@
 		@include gssMain.fonts(4, white);
 		@include gssMain.font-neon(ivory, green);
 	}
+	.fail {
+		@include gssMain.font-neon(ivory, crimson);
+	}
 }

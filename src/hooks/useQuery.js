@@ -52,47 +52,87 @@ queryObject: KEY VALUE PAIRS FOR FIELDS OF THE URL
 ///////////////////////////////////////////////////////
 */
 
-	const reqAPI = async (request, queryObject) => {
-		try {
+	const keyValueObjectCreator = async (keys, callback) => {
+		//INITIALIZATION 1 ) ON THE FIRST CALL IT CREATES AN EMPTY OBJECT.
+		/*
+    @newObject = THE NEW OBJECT THE KEY VALUE PAIRS WILL BE ASSIGNED
+    @stateKeys = THE KEYS OBTAINED FROM THE CURRENT STATE
+    @inc = AN INCRIMENT FOR THE while LOOP
+    */
+		const newObject = {};
+
+		let inc = 0;
+		while (inc < keys.length) {
+			const fetchedData = await callback(keys[inc]);
+			//ASSIGNMENT 1 ) EACH KEY VALUE PAIR OF THE STATE IS ASSIGNED TO newState
+			newObject[keys[inc]] = fetchedData;
+			inc++;
+		}
+		return newObject;
+	};
+
+	const createQueryObject = async (request, queryObject) => {
+		const queryAPI = async (string) => {
 			// URL CONTRUCTION 1 ) CREATES THE BASE FOR THE URL "https://finnhub.io/api/v1/";
-			const mount = getMount(request);
+
+			const mount = getMount(string);
 
 			//URL CONTRUSTION 2 ) ADDS THE FIELDS TO THE URL
 			const query = queryReducer(mount, queryObject);
 
-			const result = await fetch(query).then((res) => res.json());
+			try {
+				const result = await fetch(query).then((res) => res.json());
 
-			//ERROR 1 ) BAD REQUESTS RETURN AN EMPTY OBJECT SO CHECKING FOR KEYS IS THE BEST WAY TO VERIFY ERRORS WITH INPUTS
-			//RETURNS FALSE UNDER THESE CIRCUMSTANCES.
-			if (Object.keys(result).length === 0) return false;
+				//ERROR 1 ) BAD REQUESTS RETURN AN EMPTY OBJECT SO CHECKING FOR KEYS IS THE BEST WAY TO VERIFY ERRORS WITH INPUTS
+				//RETURNS FALSE UNDER THESE CIRCUMSTANCES.
+				if (Object.keys(result).length === 0) return false;
 
-			return result;
-		} catch (error) {
-			return false;
+				return result;
+			} catch (error) {
+				return false;
+			}
+		};
+
+		if (typeof request === "object") {
+			const newObjectThing = await keyValueObjectCreator(request, queryAPI);
+			return newObjectThing;
 		}
+
+		return await queryAPI(request);
 	};
-	return reqAPI;
+	return createQueryObject;
 };
 
-//TODO: ADJUST SO THAT IT TRIES MORE COMPANIES GOING DOWN THE ARRAY IF ONE DOES NOT FIT
-export const checkCompanyName = (company, queryNumber) => {
-	try {
-		console.log(queryNumber);
+export const checkCompanyName = (company, trys = 0) => {
+	//TODO: MAE SEARCH CORRECTION BETTER
 
-		if (queryNumber >= 2) return "REDIRECT";
+	if (trys > 5) return false;
 
-		const regExp = new RegExp(company, "gi");
+	// FILTER 1 ) FILTERS THROUGH THE LIST OF STOCKS FOR THE COMPANY NAME
+	const filterData = (string) => {
+		const regExp = new RegExp(string, "i");
 
 		const filteredData = STOCK_TICKERS.filter((stock) => {
-			return regExp.test(stock["Company Name"]);
+			//FILTER 2 ) REMOVES ANY TICKERS WITH THE $ SINCE THEY ARE NOT COMMON STOCK
+			return (
+				regExp.test(stock["Company Name"]) && !/\$/.test(stock["ACT Symbol"])
+			);
 		});
+		return filteredData;
+	};
 
-		const ticker = filteredData[queryNumber]["ACT Symbol"];
-		return ticker;
-	} catch (error) {
-		console.log(error);
-		return false;
+	const checkForCompany = filterData(company);
+
+	// FILTER 3 ) IF NO COMPANIES COME BACK FROM THE FILTER, THE STRING IS SHORTENED AND THE FUNCTION IS RECCURED
+	// IF THE FUNCTION IS RECCURED 5 TIMES IT RETURNS FALSE
+	if (!checkForCompany || checkForCompany.length === 0) {
+		const shorterName = company.slice(0, company.length - 1);
+		const attempt = trys + 1;
+		return checkCompanyName(shorterName, attempt);
 	}
+
+	const [ticker] = checkForCompany;
+	return ticker["ACT Symbol"];
 };
 
 export default useQuery;

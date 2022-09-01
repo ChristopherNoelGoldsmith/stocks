@@ -85,7 +85,6 @@ export const chartRangeReducer = (state, action) => {
 			state.lowest = action.data;
 			break;
 		default:
-			console.log("invalid action");
 	}
 
 	return {

@@ -22,7 +22,6 @@ const createEarningsChart = (data) => {
 			})
 			.reverse();
 	};
-	console.log(data);
 	const actualRes = extractData(data, "actual");
 	const currentRes = extractData(data, "estimate");
 

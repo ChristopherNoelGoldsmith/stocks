@@ -14,14 +14,11 @@ import { useContext } from "react";
 import { UrlContext } from "../context/context";
 
 const ProductPage = () => {
-	const [ticker, setTicker] = useState();
-	const [earningsData, setEarnings] = useState();
-	const [profileData, setProfile] = useState();
+	const [queryData, setQueryData] = useState();
 	const [tickerName, setTickerName] = useState("ERROR");
 	const [peersData, setPeers] = useState([]);
 	const [loaded, setLoaded] = useState(false);
-	const [candle, setCandle] = useState();
-	const [numberOfQueries, setNumberOfQueries] = useState(0);
+	const [loadingFailure, setLoadingFailure] = useState(false);
 	const { id: rawId } = useParams();
 	const { urlContextReducer, URL_TYPES } = useContext(UrlContext);
 	const id = rawId.toUpperCase();
@@ -73,49 +70,52 @@ const ProductPage = () => {
 ///////////////////////////////////////////////////////////
 	*/
 	useEffect(() => {
-		const fields = { symbol: id };
+		const fields = {
+			symbol: id,
+			from: Math.round(new Date().getTime() / 1000) - 60 * 60 * 24 * 30,
+			to: Math.round(new Date().getTime() / 1000),
+		};
 		const reqAPI = async (data) => {
 			setLoaded(false);
-			// API CALLS ) CALLS ALL DATA FROM PARTS OF THE API TO CREATE THE PROFILE PAGE
-			const price = await query("prices", data);
-			const profile = await query("profile", data);
-			const earnings = await query("earnings", data);
-			const peers = await query("peers", data);
-			const candle = await query("candle", {
-				symbol: id,
-				from: Math.round(new Date().getTime() / 1000) - 60 * 60 * 24 * 30,
-				to: Math.round(new Date().getTime() / 1000),
-			});
+			// API CALLS ) USES STRINGS TO DIRECT CALLS TO THE API, THEN RETURN AN OBJECT CONTAINING
+			//THE RESULTS OF THE QUERIES WITH THE COORISPONDING STRINGS AS KEYS
+			const queryStrings = ["prices", "profile", "earnings", "peers", "candle"];
 
+			const queryData = await query(queryStrings, data);
 			// ERROR HANDLING 1 ) IF ANY OF THE API CALLS RETURN FALSE IT RETURNS THE FUNCTION
-			if (!price || !earnings || !profile || !peers || !candle) {
-				const newSymbol = checkCompanyName(data.symbol, numberOfQueries);
-				setNumberOfQueries((num) => num + 1);
+			if (!queryData.profile) {
+				const newSymbol = checkCompanyName(data.symbol);
 
-				// ERROR HANDLING 2 ) REDIRECTS TO HOME PAGE AFTER 3 UNSUCCESSFUL QUERIES ARE MADE ON THE NAME OF A COMPANY OR TICKER
-				if (newSymbol === "REDIRECT") {
-					await urlContextReducer({
-						type: newSymbol,
-					});
+				//ERROR HANDLING 2 ) REDIRECTS IF NEW SYMBOL IS ALSO INVALID
+				if (!newSymbol) {
+					setLoadingFailure(true);
+
+					//EXPERIENCE 1 ) setTimeout IS USED TO ENSURE THE USER CAN SEE THE ERROR MESSAGE
+					// WHEN THEY ENTER AN INVALID COMPANY NAME OR TICKER SYMBOL
+
+					setTimeout(async () => {
+						await urlContextReducer({
+							type: URL_TYPES.HOME,
+							urlString: "", //ERROR HANDLING 2 ) IF NEW SYMBOL IS FALSE, ORIGINAL SYMBOL IS USED
+						});
+					}, 1000);
 					return;
 				}
 
 				await urlContextReducer({
 					type: URL_TYPES.STOCK,
-					urlString: newSymbol || data.symbol, //ERROR HANDLING 3 ) IF NEW SYMBOL IS FALSE, ORIGINAL SYMBOL IS USED
+					urlString: newSymbol,
 				});
 				return;
 			}
 			// CREATES LIST )
-			await peersListReducer(peers);
+			if (queryData.peers) {
+				await peersListReducer(queryData.peers);
+			}
 
 			//SETS THE STATES )
 			setTickerName(id);
-			setProfile(profile);
-			setEarnings(earnings);
-			setTicker(price);
-			setCandle(candle);
-			setNumberOfQueries(0);
+			setQueryData(queryData);
 			return setLoaded(true);
 		};
 		reqAPI(fields);
@@ -129,22 +129,22 @@ const ProductPage = () => {
 				<section className={styles["product-page"]}>
 					<section className={styles["product"]}>
 						<TickerInfo
-							profileData={profileData}
+							profileData={queryData?.profile}
 							id={tickerName}
-							ticker={ticker}
+							ticker={queryData?.prices}
 						/>
 						<section className={styles["earnings"]}>
-							<PriceHistory data={candle} />
-							<Earnings earningsData={earningsData} />
+							<PriceHistory data={queryData?.candle} />
+							<Earnings earningsData={queryData?.earnings} />
 						</section>
 						<section>
-							<Profile profileData={profileData} />
+							<Profile profileData={queryData?.profile} />
 						</section>
 					</section>
-					<Peers peersData={peersData} />
+					{peersData && <Peers peersData={peersData} />}
 				</section>
 			) : (
-				<LoadingBar />
+				<LoadingBar fail={loadingFailure} />
 			)}
 		</Fragment>
 	);
