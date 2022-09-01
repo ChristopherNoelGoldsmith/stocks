@@ -1,36 +1,33 @@
-import TickerInfo from "../components/TickerInfo/TickerInfo";
+import STOCK_TICKERS from "../assets/stocks_tickers.json";
 
-export const peersListReducer = async (peers) => {
-	//LIST CREATION 1 ) RANDOMIZE LIST THEN CREATE NEW LIST WITH ARR METHODS
-	const createPeersList = peers
-		.sort(() => Math.random() - 0.5)
-		.map(async (peer, index) => {
-			//LIMIT 1 ) LIMITS THE NUMBER OF RECCOMENDED ITEMS CREATED FROM THE LIST THE API GIVES
-			if (index < 0 || index > 3) return;
+export const checkCompanyName = (company, trys = 0) => {
+	//TODO: MAKE SEARCH CORRECTION BETTER
+	if (typeof company !== "string") return false;
+	if (trys > 5) return false;
 
-			//LIST CREATION 2 ) API CALLS TO FOR THE DATA
-			const fields = { symbol: peer };
-			const ticker = await query("prices", fields);
-			const profileData = await query("profile", fields);
+	// FILTER 1 ) FILTERS THROUGH THE LIST OF STOCKS FOR THE COMPANY NAME
+	const filterData = (string) => {
+		const regExp = new RegExp(string, "i");
 
-			//ERROR HANDLING 1 ) RETURNS IF VALUES RETURN AS FALSE FROM THE API
-			if (!ticker.o) return;
-
+		const filteredData = STOCK_TICKERS.filter((stock) => {
+			//FILTER 2 ) REMOVES ANY TICKERS WITH THE $ SINCE THEY ARE NOT COMMON STOCK
 			return (
-				<li>
-					<TickerInfo
-						key={Math.random() * 100000}
-						ticker={ticker}
-						profileData={profileData}
-						id={peer}
-					/>
-				</li>
+				regExp.test(stock["Company Name"]) && !/\$/.test(stock["ACT Symbol"])
 			);
 		});
+		return filteredData;
+	};
 
-	//LIST CREATION 3 ) RESOLVES ALL PROMISES IN THE ARRAY GENERATED ABOVE;
-	const list = await Promise.all(createPeersList);
+	const checkForCompany = filterData(company);
 
-	//LIST CREATION 4 ) SETS LIST TO THE STATE
-	setPeers(list);
+	// FILTER 3 ) IF NO COMPANIES COME BACK FROM THE FILTER, THE STRING IS SHORTENED AND THE FUNCTION IS RECCURED
+	// IF THE FUNCTION IS RECCURED 5 TIMES IT RETURNS FALSE
+	if (!checkForCompany || checkForCompany.length === 0) {
+		const shorterName = company.slice(0, company.length - 1);
+		const attempt = trys + 1;
+		return checkCompanyName(shorterName, attempt);
+	}
+
+	const [ticker] = checkForCompany;
+	return ticker["ACT Symbol"];
 };

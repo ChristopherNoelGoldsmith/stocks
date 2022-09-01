@@ -1,5 +1,10 @@
 ///stock/profile2?symbol=AAPL
 import styles from "./Profile.module.scss";
+
+const shortenName = (name) => {
+	return name.length < 15 ? name : name.slice(0, 12) + "..";
+};
+
 const Profile = (props) => {
 	const { profileData } = props;
 
@@ -35,7 +40,8 @@ const Profile = (props) => {
 				<ul>
 					<li>{`${profileData?.finnhubIndustry} - (${profileData?.country})`}</li>
 					<li>
-						WEBSITE: <a href={profileData?.weburl}>{profileData?.name}</a>
+						WEBSITE:{" "}
+						<a href={profileData?.weburl}>{shortenName(profileData?.name)}</a>
 					</li>
 					<li>{`IPO: ${profileData?.ipo}`}</li>
 					<li>{`Market Cap: ${convertToRightNumber(

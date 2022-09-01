@@ -17,15 +17,16 @@ $background: rgba(
 		width: 60%;
 	}
 	img {
-		height: 2.5rem;
-		width: 2.5rem;
+		max-height: 2.5rem;
+		max-width: 2.5rem;
 	}
 	label {
 		@include gssMain.fonts(2, ivory);
 		height: 3rem;
 		text-shadow: 1px 1px 10px rgba($color: white, $alpha: 0.9);
 		position: relative;
-		min-width: 5rem;
+		min-width: 3rem;
+		max-width: 4rem;
 	}
 	:hover {
 		color: green;
@@ -42,6 +43,8 @@ $background: rgba(
 			width: inherit;
 			position: relative;
 			height: 2.5rem;
+			margin-left: 1rem;
+			min-width: 6rem;
 			@include gssMain.fonts(1.5, ivory);
 		}
 		span.red::before {

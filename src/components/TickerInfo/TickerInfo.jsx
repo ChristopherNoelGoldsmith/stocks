@@ -1,6 +1,12 @@
 import styles from "./TickerInfo.module.scss";
 import { useState, useEffect, useContext } from "react";
 import { UrlContext } from "../../context/context";
+
+//TODO: put in module
+const shortenName = (name) => {
+	return name.length < 20 ? name : name.slice(0, 15) + "..";
+};
+
 const TickerInfo = (props) => {
 	const { urlContextReducer, URL_TYPES } = useContext(UrlContext);
 	const [priceMove, setPriceMove] = useState();
@@ -67,7 +73,7 @@ const TickerInfo = (props) => {
 				alt="company logo"
 			/>
 			<label
-				bottom={props.profileData?.name}
+				bottom={shortenName(props.profileData?.name)}
 				htmlFor={props.profileData?.name}
 				className={styles["ticker"]}
 				onClick={navigationHandler}

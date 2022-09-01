@@ -9,55 +9,21 @@ import TickerInfo from "../components/TickerInfo/TickerInfo";
 import Profile from "../components/Profile/Profile";
 import Peers from "../components/Peers/Peers";
 import LoadingBar from "../components/UI/LoadingBar";
-import { checkCompanyName } from "../hooks/useQuery";
+import { checkCompanyName } from "./productPageUtil";
 import { useContext } from "react";
 import { UrlContext } from "../context/context";
+import useRec from "../hooks/useRec";
 
 const ProductPage = () => {
 	const [queryData, setQueryData] = useState();
 	const [tickerName, setTickerName] = useState("ERROR");
-	const [peersData, setPeers] = useState([]);
+	const [peersData, setPeers] = useRec();
 	const [loaded, setLoaded] = useState(false);
 	const [loadingFailure, setLoadingFailure] = useState(false);
 	const { id: rawId } = useParams();
 	const { urlContextReducer, URL_TYPES } = useContext(UrlContext);
 	const id = rawId.toUpperCase();
 	const query = useQuery();
-
-	const peersListReducer = async (peers) => {
-		//LIST CREATION 1 ) RANDOMIZE LIST THEN CREATE NEW LIST WITH ARR METHODS
-		const createPeersList = peers
-			.sort(() => Math.random() - 0.5)
-			.map(async (peer, index) => {
-				//LIMIT 1 ) LIMITS THE NUMBER OF RECCOMENDED ITEMS CREATED FROM THE LIST THE API GIVES
-				if (index < 0 || index > 3) return;
-
-				//LIST CREATION 2 ) API CALLS TO FOR THE DATA
-				const fields = { symbol: peer };
-				const ticker = await query("prices", fields);
-				const profileData = await query("profile", fields);
-
-				//ERROR HANDLING 1 ) RETURNS IF VALUES RETURN AS FALSE FROM THE API
-				if (!ticker.o) return;
-
-				return (
-					<li>
-						<TickerInfo
-							key={Math.random() * 100000}
-							ticker={ticker}
-							profileData={profileData}
-							id={peer}
-						/>
-					</li>
-				);
-			});
-
-		//LIST CREATION 3 ) RESOLVES ALL PROMISES IN THE ARRAY GENERATED ABOVE;
-		const list = await Promise.all(createPeersList);
-
-		//LIST CREATION 4 ) SETS LIST TO THE STATE
-		setPeers(list);
-	};
 
 	/*
 ///////////////////////////////////////////////////////////	
@@ -110,7 +76,7 @@ const ProductPage = () => {
 			}
 			// CREATES LIST )
 			if (queryData.peers) {
-				await peersListReducer(queryData.peers);
+				await setPeers(queryData.peers);
 			}
 
 			//SETS THE STATES )
