@@ -1,6 +1,6 @@
 import styles from "./HomePage.module.scss";
 import Navbar from "../components/UI/Navbar/Navbar";
-import { Fragment, useContext, useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import SearchInput from "../components/UI/SearchInput";
 import useRec from "../hooks/useRec";
 

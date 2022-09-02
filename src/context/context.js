@@ -55,6 +55,7 @@ const URLContextProvider = ({ children }) => {
 
 	return (
 		<UrlContext.Provider value={{ urlContextReducer, URL_TYPES }}>
+			Router
 			{children}
 		</UrlContext.Provider>
 	);

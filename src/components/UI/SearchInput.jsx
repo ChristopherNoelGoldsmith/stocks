@@ -25,14 +25,20 @@ const SearchInput = (props) => {
 	};
 
 	return (
-		<form className={styles[props.direction]} onSubmit={searchHanlder}>
+		<form
+			aria-label={"form"}
+			className={styles[props.direction]}
+			onSubmit={searchHanlder}
+		>
 			<input
 				type="text"
+				id={"search"}
+				name={"search"}
 				onChange={searchBarHandler}
 				value={inputState?.SEARCH || ""}
 				placeholder={DUMMY_DATA.tickerInput}
 			/>
-			<button>SEARCH</button>
+			<button aria-label={"button"}>SEARCH</button>
 		</form>
 	);
 };
