@@ -18,7 +18,10 @@ $font-color-1: ivory;
 		width: 100%;
 		height: 40vh;
 		input {
-			width: 40vw;
+			width: 80vw;
+			@include gssMain.md {
+				width: 40vw;
+			}
 		}
 		button {
 			width: 30vw;

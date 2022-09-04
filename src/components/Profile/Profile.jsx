@@ -40,7 +40,6 @@ const Profile = (props) => {
 				<ul>
 					<li>{`${profileData?.finnhubIndustry} - (${profileData?.country})`}</li>
 					<li>
-						WEBSITE:{" "}
 						<a href={profileData?.weburl}>{shortenName(profileData?.name)}</a>
 					</li>
 					<li>{`IPO: ${profileData?.ipo}`}</li>

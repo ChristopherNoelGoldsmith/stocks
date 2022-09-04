@@ -12,10 +12,13 @@ $background: rgba(
 	gap: 3%;
 	overflow-x: hidden;
 	.product {
-		@include gssMain.neon-shadow(azure);
-		margin: 10vh;
-		width: 80%;
+		width: 100%;
 		padding: 2rem;
+		@include gssMain.md {
+			@include gssMain.neon-shadow(azure);
+			margin: 10vh;
+			width: 80%;
+		}
 		@include gssMain.xl {
 			margin-top: 0px;
 			width: 55%;
